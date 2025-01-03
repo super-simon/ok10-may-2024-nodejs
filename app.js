@@ -1,6 +1,8 @@
 const express = require("express");
+const dotenv = require("dotenv");
+dotenv.config({ path: ".env" });
+
 const app = express();
-const port = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -50,7 +52,7 @@ app.get("/users", (req, res) => {
 
 app.post("/users", (req, res) => {
   const user = {
-    id: users.length,
+    id: users.length + 1,
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
@@ -77,6 +79,8 @@ app.delete("/users/:userId", (req, res) => {
 // get-user-by-id -> users/:id (GET)
 // update-user -> users/:id (PATCH)
 // delete-user -> users/:id (DELETE)
+
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
