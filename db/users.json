@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Oleksandr",
+    "email": "super.oleksandr@email.com",
+    "password": "password"
+  },
+  {
+    "id": 2,
+    "name": "The Simon",
+    "email": "super@mega.com",
+    "password": "helloooo"
+  },
+  {
+    "id": 6,
+    "name": "Oleksandr",
+    "email": "super.oleksandr@email.com",
+    "password": "password"
+  },
+  {
+    "id": 7,
+    "name": "Sim",
+    "email": "supafsears@super.com",
+    "password": "hfffasdfA09*elf"
+  },
+  {
+    "id": 8,
+    "name": "Sim",
+    "email": "supafsears@super.com",
+    "password": "hfffasdfA09*elf"
+  },
+  {
+    "id": 9,
+    "name": "Sim",
+    "email": "supafsears@super.com",
+    "password": "hfffasdfA09*elf"
+  },
+  {
+    "id": 10,
+    "name": "Sim",
+    "email": "supafsears@super.com",
+    "password": "hfffasdfA09*elf"
+  },
+  {
+    "id": 11,
+    "name": "Sim",
+    "email": "supafsears@super.com",
+    "password": "hfffasdfA09*elf"
+  }
+]
