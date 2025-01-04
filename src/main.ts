@@ -1,6 +1,7 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const { read, write } = require("./fs.service");
+import dotenv from "dotenv";
+import express, { Request, Response } from "express";
+
+import { read, write } from "./fs.service";
 
 dotenv.config({ path: ".env" });
 
@@ -9,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/users", async (_req, res) => {
+app.get("/users", async (_req: Request, res: Response): Promise<void> => {
   try {
     const users = await read();
     res.json(users);
@@ -18,7 +19,7 @@ app.get("/users", async (_req, res) => {
   }
 });
 
-app.post("/users", async (req, res) => {
+app.post("/users", async (req: Request, res: Response) => {
   try {
     const users = await read();
     const user = {
@@ -35,7 +36,7 @@ app.post("/users", async (req, res) => {
   }
 });
 
-app.get("/users/:userId", async (req, res) => {
+app.get("/users/:userId", async (req: Request, res: Response) => {
   console.log("Params: ", req.params);
   console.log("Query: ", req.query);
   console.log("Body: ", req.body);
@@ -44,7 +45,7 @@ app.get("/users/:userId", async (req, res) => {
   res.json(user);
 });
 
-app.put("/users/:userId", async (req, res) => {
+app.put("/users/:userId", async (req: Request, res: Response): Promise<any> => {
   try {
     const users = await read();
     const index = users.findIndex(
@@ -66,22 +67,25 @@ app.put("/users/:userId", async (req, res) => {
   }
 });
 
-app.delete("/users/:userId", async (req, res) => {
-  try {
-    const users = await read();
-    const index = users.findIndex(
-      (user) => user.id === Number(req.params.userId),
-    );
-    if (index === -1) {
-      return res.status(404).json({ message: "User not found" });
+app.delete(
+  "/users/:userId",
+  async (req: Request, res: Response): Promise<any> => {
+    try {
+      const users = await read();
+      const index = users.findIndex(
+        (user) => user.id === Number(req.params.userId),
+      );
+      if (index === -1) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      users.splice(index, 1);
+      write(users);
+      res.sendStatus(204);
+    } catch (e) {
+      res.status(500).json(e.message);
     }
-    users.splice(index, 1);
-    write(users);
-    res.sendStatus(204);
-  } catch (e) {
-    res.status(500).json(e.message);
-  }
-});
+  },
+);
 
 // create-user -> users (POST)
 // get-list-users -> users (GET)
