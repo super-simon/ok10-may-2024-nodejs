@@ -2,7 +2,8 @@ import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 
 import { ApiError } from "./errors/api-error";
-import { read, write } from "./fs.service";
+import { userRouter } from "./routers/user.router";
+import { read, write } from "./services/fs.service";
 
 dotenv.config({ path: ".env" });
 
@@ -11,49 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get(
-  "/users",
-  async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const users = await read();
-      res.json(users);
-    } catch (e) {
-      next(e);
-    }
-  },
-);
-
-app.post("/users", async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    if (!req.body.name || req.body.name.length < 3) {
-      throw new ApiError(
-        "Name is required and should be minimum 3 symbols",
-        400,
-      );
-    }
-    if (!req.body.email || !req.body.email.includes("@")) {
-      throw new ApiError("Email is reqired.", 400);
-    }
-    if (!req.body.password || req.body.password.length < 8) {
-      throw new ApiError(
-        "Password is required and should be minimum 8 symbols",
-        400,
-      );
-    }
-    const users = await read();
-    const user = {
-      id: users.length ? users[users.length - 1].id + 1 : 1,
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-    };
-    users.push(user);
-    await write(users);
-    res.status(201).json(user);
-  } catch (e) {
-    next(e);
-  }
-});
+app.use("/users", userRouter);
 
 app.get(
   "/users/:userId",
