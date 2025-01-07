@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
-
+import mongoose from "mongoose";
+import { config } from "./configs/config";
 import { ApiError } from "./errors/api-error";
 import { userRouter } from "./routers/user.router";
 
@@ -33,8 +34,7 @@ process.on("uncaughtException", (error) => {
 // update-user -> users/:id (PATCH)
 // delete-user -> users/:id (DELETE)
 
-const port = process.env.PORT || 3000;
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+app.listen(config.port, async () => {
+  await mongoose.connect(config.mongoUrl);
+  console.log(`Example app listening on port ${config.port}`);
 });
