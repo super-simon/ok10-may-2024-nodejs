@@ -6,14 +6,15 @@ export class UserValidator {
   private static age = joi.number().min(18).max(200);
   private static email = joi.string().email().trim();
   private static password = joi.string().regex(regexConstant.PASSWORD);
-  private static phone = joi.string().regex(regexConstant.PHONE);
+  private static phone = joi.string().regex(regexConstant.PHONE).trim();
+  // private static role = joi.string().valid(...Object.values(RoleEnum));
 
   public static create = joi.object({
     name: this.name.required(),
     age: this.age.required(),
     email: this.email.required(),
     password: this.password.required(),
-    phone: this.phone.trim().optional(),
+    phone: this.phone.optional(),
   });
 
   public static update = joi.object({

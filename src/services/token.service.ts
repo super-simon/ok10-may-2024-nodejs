@@ -35,7 +35,7 @@ class TokenService {
       }
 
       return jwt.verify(token, secret) as ITokenPayload;
-    } catch (e) {
+    } catch (_e) {
       throw new ApiError("Invalid token", 401);
     }
   }
