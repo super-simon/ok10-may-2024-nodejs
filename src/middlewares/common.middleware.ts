@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { ObjectSchema } from "joi";
 import { isObjectIdOrHexString } from "mongoose";
+
 import { ApiError } from "../errors/api-error";
 
 class CommonMiddleware {
-  public isValidId(key: string) {
-    return (req: Request, _res: Response, next: NextFunction) => {
+  public isIdValid(key: string) {
+    return (req: Request, res: Response, next: NextFunction) => {
       try {
         const id = req.params[key];
         if (!isObjectIdOrHexString(id)) {
@@ -19,7 +20,7 @@ class CommonMiddleware {
   }
 
   public validateBody(validator: ObjectSchema) {
-    return async (req: Request, _res: Response, next: NextFunction) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
       try {
         req.body = await validator.validateAsync(req.body);
         next();

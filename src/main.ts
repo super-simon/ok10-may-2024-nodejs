@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import { config } from "./configs/config";
 import { ApiError } from "./errors/api-error";
+import { authRouter } from "./routers/auth.router";
 import { userRouter } from "./routers/user.router";
 
 dotenv.config({ path: ".env" });
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/users", userRouter);
+app.use("/auth", authRouter);
 
 app.use(
   "*",

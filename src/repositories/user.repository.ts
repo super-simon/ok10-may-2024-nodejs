@@ -7,7 +7,7 @@ import { User } from "../models/user.model";
 
 class UserRepository {
   public async getList(): Promise<IUser[]> {
-    return await User.find({});
+    return await User.find();
   }
 
   public async create(dto: IUserCreateDto): Promise<IUser> {
