@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { ObjectSchema } from "joi";
 import { isObjectIdOrHexString } from "mongoose";
 import { ApiError } from "../errors/api-error";
 
@@ -17,31 +18,15 @@ class CommonMiddleware {
     };
   }
 
-  public validateBody(validator: any) {
-    return (req: Request, _res: Response, next: NextFunction) => {
+  public validateBody(validator: ObjectSchema) {
+    return async (req: Request, _res: Response, next: NextFunction) => {
       try {
-        const dto = req.body;
-        if (!dto.name || dto.name.length < 3) {
-          throw new ApiError(
-            "Name is required and should be minimum 3 symbols",
-            400,
-          );
-        }
-        if (!dto.email || !dto.email.includes("@")) {
-          throw new ApiError("Email is required", 400);
-        }
-        if (!dto.password || dto.password.length < 8) {
-          throw new ApiError(
-            "Password is required and should be minimum 8 symbols",
-            400,
-          );
-        }
-        req.body = dto;
+        req.body = await validator.validateAsync(req.body);
         next();
       } catch (e) {
-        next(e);
+        next(new ApiError(e.details[0].message, 400));
       }
-    }
+    };
   }
 }
 

@@ -18,6 +18,10 @@ class UserRepository {
     return await User.findById(userId);
   }
 
+  public async getByEmail(email: string): Promise<IUser> {
+    return await User.findOne({ email });
+  }
+
   public async updateById(userId: string, dto: IUserUpdateDto): Promise<IUser> {
     return await User.findByIdAndUpdate(userId, dto, { new: true });
   }

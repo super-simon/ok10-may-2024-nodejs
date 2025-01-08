@@ -12,6 +12,7 @@ class UserService {
   }
 
   public async create(dto: IUserCreateDto): Promise<IUser> {
+    await this.isEmailUnique(dto.email);
     return await userRepository.create(dto);
   }
 
@@ -37,6 +38,13 @@ class UserService {
       throw new ApiError("User not found", 404);
     }
     await userRepository.deleteById(userId);
+  }
+
+  private async isEmailUnique(email: string): Promise<void> {
+    const user = await userRepository.getByEmail(email);
+    if (user) {
+      throw new ApiError("Email is already in use", 409);
+    }
   }
 }
 
