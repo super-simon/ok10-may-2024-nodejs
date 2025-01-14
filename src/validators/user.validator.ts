@@ -1,4 +1,5 @@
 import joi from "joi";
+
 import { regexConstant } from "../constants/regex.constant";
 
 export class UserValidator {
@@ -26,5 +27,9 @@ export class UserValidator {
   public static login = joi.object({
     email: this.email.required(),
     password: this.password.required(),
+  });
+
+  public static forgotPassword = joi.object({
+    email: this.email.required(),
   });
 }
